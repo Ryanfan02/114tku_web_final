@@ -1,179 +1,251 @@
-#  專案規格書  
-## 類 Dcard 留言版系統（Forum System）
+# 行程清單系統規格書  
+
 
 ---
 
-## 一、專案簡介
+## 1. 專案主題與目標
 
-本專案旨在開發一套**類似 Dcard 的留言版系統**，提供使用者發文、留言、瀏覽熱門文章等功能。  
-系統採用**前後端分離架構**，後端使用 **MongoDB** 作為資料庫，提供完整的 **CRUD API**，前端負責資料呈現與互動。
+### 1.1 專案主題
+本專案為一個「行程清單檢視系統」，使用者可透過日曆選擇日期，查看指定日期的清單介面。  
+系統提供三種使用方式：
 
-系統支援帳號註冊與登入機制，並規定：
-- Email 註冊僅允許使用 **Google 帳號**
-- 可使用 **手機號碼註冊 / 登入**
-- 註冊時需設定密碼，並以加密方式儲存
+- 訪客登入（試用模式，不存取後端資料）
+- Gmail 帳號註冊
+- 已註冊帳號登入
 
----
-
-## 二、系統目標
-
-1. 提供使用者可自由發文與留言的討論平台  
-2. 實作文章與留言的 CRUD 功能  
-3. 建立安全的使用者註冊與登入系統  
-4. 提供推薦 / 熱門文章瀏覽功能  
-5. API 設計清楚，符合 RESTful 規範  
+### 1.2 專案目標
+- 建立前後端分離的 Web 系統
+- 使用 MongoDB 設計資料庫並實作 CRUD API
+- 前端採用現代化框架進行元件化開發
+- 提供良好的使用者介面與主題切換功能
 
 ---
 
-## 三、使用者角
+## 2. 功能需求（Functional Requirements）
 
-| 角色 | 說明 |
-|----|----|
-| 訪客（Guest） | 可瀏覽文章與留言 |
-| 使用者（User） | 可註冊、登入、發文、留言、編輯與刪除自己內容 |
+> 本期專案先完成「帳號系統與介面骨架」，提醒事項 CRUD 列為延伸功能（Phase 2）。
 
----
+### 2.1 登入與身分模式
 
-## 四、功能需求
+#### FR-01 訪客登入
+- 使用者可不需註冊直接進入系統。
+- 訪客模式下的操作不會存入後端資料庫。
+- 資料僅存在前端（localStorage 或記憶體）。
 
-### 4.1 帳號系統
+#### FR-02 註冊（僅 Gmail）
+- 註冊需輸入：
+  - Email（必須為 Gmail 格式）
+  - Password
+  - Confirm Password
+- 兩次密碼需一致才可註冊成功。
 
-#### 4.1.1 註冊功能
-- 支援註冊方式：
-  - Google Email
-  - 手機號碼
-- 註冊時需設定密碼
-- 密碼需經過雜湊後儲存
-- 註冊完成後建立使用者資料
-
-#### 4.1.2 登入功能
-- 登入方式：
-  - Google Email + 密碼
-  - 手機號碼 + 密碼
-- 登入成功後回傳登入驗證資訊（如 JWT）
+#### FR-03 登入
+- 使用 Gmail 帳號與密碼登入。
+- 登入成功後回傳 JWT Token 作為身分驗證依據。
 
 ---
 
-### 4.2 文章系統
+### 2.2 使用者介面
 
-#### 4.2.1 發表文章
-- 登入使用者可發表文章
-- 文章包含：
-  - 標題
-  - 內文
-  - 作者
-  - 發文時間
+#### FR-04 登入 / 註冊畫面
+- 畫面置中卡片式設計。
+- 上方以 Tab 切換：
+  - 左：登入
+  - 右：註冊
 
-#### 4.2.2 瀏覽文章
-- 所有人可瀏覽文章列表
-- 顯示：
-  - 標題
-  - 文章摘要
-  - 發文時間
-  - 留言數
-- 點擊可查看完整內容與留言
+#### FR-05 主頁清單檢視
+- 顯示清單區塊（本期先顯示空狀態或範例）。
+- 右上角提供：
+  - 日曆 icon（選擇日期）
+  - 主題切換 icon（深 / 淺）
 
-#### 4.2.3 編輯文章
-- 僅作者本人可編輯
-- 可修改標題與內文
-
-#### 4.2.4 刪除文章
-- 僅作者本人可刪除
-- 刪除文章後，相關留言一併刪除或失效
+#### FR-06 日期選擇
+- 點擊日曆 icon 可選擇年 / 月 / 日。
+- 選擇後更新畫面顯示對應日期內容。
 
 ---
 
-### 4.3 留言系統
+### 2.3 主題切換
 
-#### 4.3.1 發表留言
-- 登入使用者可於文章下留言
-- 留言內容：
-  - 留言文字
-  - 留言者
-  - 留言時間
-
-#### 4.3.2 修改 / 刪除留言
-- 僅留言者本人可修改或刪除
+#### FR-07 深 / 淺主題
+- 提供 Dark / Light 兩種主題。
+- 切換時背景、文字與卡片顏色同步調整。
+- 主題設定儲存於 localStorage。
 
 ---
 
-### 4.4 推薦 / 熱門文章
+## 3. 非功能需求（Non-Functional Requirements）
 
-- 提供推薦文章區塊
-- 排序方式可包含：
-  - 發文時間
-  - 留言數
-  - 點擊數（選用）
-
----
-
-## 五、非功能需求
-
-| 項目 | 說明 |
-|----|----|
-| 架構 | 前後端分離 |
-| 資料庫 | MongoDB |
-| API | RESTful |
-| 安全性 | 密碼雜湊、驗證機制 |
-| 回應格式 | JSON |
-| 錯誤處理 | 正確 HTTP Status Code |
-
----
-## 六、API 規格（API Specification）
-
-### 使用者（Auth）
-
-| Method | Route | 說明 |
-|------|------|------|
-| POST | /api/auth/register | 使用者註冊 |
-| POST | /api/auth/login | 使用者登入 |
-| GET | /api/auth/me | 取得目前登入者資訊 |
+- **安全性**
+  - 密碼需使用 bcrypt 雜湊
+  - 統一錯誤訊息，避免洩漏帳號資訊
+- **可用性**
+  - 介面清楚、操作直覺
+- **可維護性**
+  - 前後端分離、模組化設計
+- **一致性**
+  - API 統一回應格式
 
 ---
 
-### 文章（Posts）
+## 4. 技術選型
 
-| Method | Route | 說明 |
-|------|------|------|
-| POST | /api/posts | 新增文章 |
-| GET | /api/posts | 取得所有文章 |
-| GET | /api/posts/:id | 取得單一文章 |
-| PUT | /api/posts/:id | 更新文章 |
-| DELETE | /api/posts/:id | 刪除文章 |
+### 4.1 資料庫
+- MongoDB
+- 使用 Mongoose 定義資料模型
 
----
+### 4.2 後端
+- Node.js + Express
+- JWT（身分驗證）
+- bcrypt（密碼雜湊）
 
-### 留言（Comments）
-
-| Method | Route | 說明 |
-|------|------|------|
-| POST | /api/posts/:id/comments | 新增留言 |
-| GET | /api/posts/:id/comments | 取得指定文章的留言 |
-| PUT | /api/comments/:id | 更新留言 |
-| DELETE | /api/comments/:id | 刪除留言 |
+### 4.3 前端
+- React + TypeScript
+- CSS Framework：Tailwind CSS 或 Bootstrap
+- 日曆元件：React Date Picker / MUI DatePicker
 
 ---
 
-## 七、專案結構建議（Project Structure）
+## 5. 資料庫設計（MongoDB）
 
-```text
+### 5.1 users 集合（Phase 1）
+
+| 欄位名稱 | 型別 | 說明 |
+|--------|------|------|
+| _id | ObjectId | 主鍵 |
+| email | String | Gmail 帳號（唯一） |
+| passwordHash | String | bcrypt 雜湊密碼 |
+| createdAt | Date | 建立時間 |
+| updatedAt | Date | 更新時間 |
+
+---
+
+## 6. 後端 API 設計
+
+### 6.1 統一回應格式
+
+**成功**
+```json
+{
+  "success": true,
+  "data": {},
+  "message": "OK"
+}
+
+```
+**失敗**
+```json
+{
+  "success": false,
+  "error": {
+    "code": "ERROR_CODE",
+    "details": "Error message"
+  },
+  "message": "Failed"
+}
+
+
+```
+
+### 6.2 HTTP狀態碼
+
+| 狀態碼 | 說明 |
+|--------|------|
+| 200 | 成功 |
+| 201 | 建立成功 |
+| 400 | 請求錯誤 |
+| 401 | 未授權 |
+| 404 | 資源不存在|
+| 409 | 資料衝突 |
+| 500 | 伺服器錯誤 |
+
+----
+
+## 7. API 規格（Users CRUD）
+### 7.1 新增使用者 (Create)
+**POST /api/users**
+
+```json
+
+{
+  "email": "example@gmail.com",
+  "password": "12345678",
+  "confirmPassword": "12345678"
+}
+```
+### 7.2 取得所有使用者 (Read All)
+**GET /api/users**
+
+
+### 7.3 取得單一使用者 (Read Single)
+**GET /api/users/:id**
+
+
+### 7.4 更新使用者 (Update)
+**PUT /api/users/:id**
+
+### 7.5 刪除使用者 (Delete)
+**DELETE /api/users/:id**
+
+---
+
+## 8. 前端架構設計
+### 8.1 頁面路由
+
+- /auth：登入 / 註冊 / 訪客登入
+
+- /app：主頁（清單 + 日曆 + 主題切切換
+
+### 8.2 主要元件
+
+- AuthCard
+
+- LoginForm
+
+- RegisterForm
+
+- GuestLoginButton
+
+- TopBar
+
+- ThemeToggleButton
+
+- CalendarButton
+
+- ListView
+
+---
+
+## 9. CRUD 流程說明（以註冊為例）
+
+1. 使用者輸入註冊資料
+
+2. 前端送出 POST /api/users
+
+3. 後端驗證 Gmail 格式與密碼一致性
+
+4. 密碼進行 bcrypt 雜湊
+
+5. 資料寫入 MongoDB
+
+6. 回傳成功結果給前端
+
+---
+
+## 10. 專案目錄結構
 project-name/
-├─ frontend/
-│  ├─ src/
-│  ├─ public/
-│  └─ package.json
-│
-├─ backend/
-│  ├─ controllers/
-│  ├─ models/
-│  ├─ routes/
-│  ├─ middleware/
-│  └─ package.json
-│
-├─ docs/
-│  ├─ api-spec.md
-│  ├─ architecture.png
-│  └─ flowchart.png
-│
-├─ README.md
-└─ .gitignore
+├── frontend/
+│   ├── src/
+│   ├── public/
+│   └── package.json
+├── backend/
+│   ├── controllers/
+│   ├── models/
+│   ├── routes/
+│   └── package.json
+├── docs/
+│   ├── api-spec.md
+│   ├── architecture.png
+│   └── flowchart.png
+├── README.md
+└── .gitignore
