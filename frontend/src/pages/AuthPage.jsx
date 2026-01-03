@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import AuthCard from "../components/auth/AuthCard";
 import LoginForm from "../components/auth/LoginForm";
 import RegisterForm from "../components/auth/RegisterForm";
@@ -7,6 +8,7 @@ import { getTheme, setTheme } from "../lib/storage";
 export default function AuthPage() {
   const [tab, setTab] = useState("login");
   const [theme, setThemeState] = useState(getTheme());
+  const nav = useNavigate();
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -14,12 +16,13 @@ export default function AuthPage() {
   }, [theme]);
 
   function handleLogin() {
-    
     alert("登入 OK（尚未串後端）");
+    nav("/app");
   }
 
   function handleGuest() {
     alert("訪客登入 OK（尚未串後端）");
+    nav("/app");
   }
 
   function handleRegister(payload) {
