@@ -7,10 +7,11 @@ class EventCreateBody(BaseModel):
     note: str = Field(default="", max_length=1000)
 
 class EventUpdateBody(BaseModel):
-    dateISO: str | None = Field(default=None, min_length=10, max_length=10)
-    title: str | None = Field(default=None, min_length=1, max_length=120)
-    note: str | None = Field(default=None, max_length=1000)
-    done: bool | None = None
+    # 允許部分更新，所以全部都 Optional
+    dateISO: Optional[str] = Field(default=None, min_length=10, max_length=10)
+    title: Optional[str] = Field(default=None, min_length=1, max_length=120)
+    note: Optional[str] = Field(default=None, max_length=1000)
+    done: Optional[bool] = None
 
 class EventOut(BaseModel):
     id: str
@@ -19,7 +20,3 @@ class EventOut(BaseModel):
     note: str
     done: bool
     createdAt: int
-class EventUpdateBody(BaseModel):
-    title: Optional[str] = Field(default=None, min_length=1, max_length=120)
-    note: Optional[str] = Field(default=None, max_length=1000)
-    done: Optional[bool] = None

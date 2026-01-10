@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from app.db import db
-from app.models.user import RegisterBody, LoginBody, AuthResponse
+from app.models.user import RegisterBody, LoginBody, AuthResponse, ResetPasswordBody
 from app.security import hash_password, verify_password, create_access_token
 import time
 
@@ -51,10 +51,28 @@ async def login(body: LoginBody):
 
 @router.post("/guest", response_model=AuthResponse)
 async def guest_login():
-    # 不寫入 users，不落庫，只給前端一個 token 表示訪客身分
     token = create_access_token({
         "user_id": "guest",
         "username": "guest",
         "isGuest": True,
     })
     return AuthResponse(token=token, username="guest", isGuest=True)
+
+
+@router.post("/reset-password")
+async def reset_password(body: ResetPasswordBody):
+    if body.newPassword != body.confirmNewPassword:
+        raise HTTPException(status_code=400, detail="Passwords do not match")
+
+    user = await db.users.find_one({"username": body.username})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    hashed = hash_password(body.newPassword)
+
+    await db.users.update_one(
+        {"_id": user["_id"]},
+        {"$set": {"password_hash": hashed}}
+    )
+
+    return {"ok": True}

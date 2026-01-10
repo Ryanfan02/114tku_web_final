@@ -9,6 +9,11 @@ class LoginBody(BaseModel):
     username: str
     password: str
 
+class ResetPasswordBody(BaseModel):
+    username: str = Field(min_length=3, max_length=50)
+    newPassword: str = Field(min_length=6, max_length=200)
+    confirmNewPassword: str = Field(min_length=6, max_length=200)
+
 class AuthResponse(BaseModel):
     token: str
     username: str
