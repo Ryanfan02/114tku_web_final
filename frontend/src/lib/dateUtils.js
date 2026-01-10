@@ -10,9 +10,9 @@ export function sameISODate(a, b) {
 }
 
 export function startOfWeek(iso) {
-  // 以「週日」為一週開始
+
   const d = new Date(iso + "T00:00:00");
-  const dow = d.getDay(); // 0..6
+  const dow = d.getDay(); 
   d.setDate(d.getDate() - dow);
   return toISODate(d);
 }
@@ -35,7 +35,7 @@ export function monthLabel(iso) {
 }
 
 export function getMonthMatrix(focusedMonthISO) {
-  // 回傳 42 格（6 週 x 7 天），每格是 ISO
+
   const d = new Date(focusedMonthISO + "T00:00:00");
   const y = d.getFullYear();
   const m = d.getMonth();

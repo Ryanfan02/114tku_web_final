@@ -29,19 +29,12 @@ function makeId() {
   return "ev_" + Date.now() + "_" + Math.random().toString(16).slice(2);
 }
 
-/**
- * ✅ 相容舊版 UI：WeekView / MiniMonth / AppPage 可能還在用
- * getEventsByDate(events, iso)
- */
+
 export function getEventsByDate(events, iso) {
   return filterByDate(events, iso);
 }
 
-/**
- * ✅ 相容舊版 UI：AppPage 原本用 upsertEvent(events, payload)
- * 這個只做「純前端陣列新增」，不打後端。
- *（建議你之後逐步改用 createEvent(payload)）
- */
+
 export function upsertEvent(events, payload) {
   const id = makeId();
   const next = [...events];
@@ -56,7 +49,7 @@ export function upsertEvent(events, payload) {
   return next;
 }
 
-// ===== 對外：載入（登入走後端 / 訪客走 localStorage）=====
+
 export async function loadEvents(dateISO) {
   if (isGuestMode()) {
     const all = loadGuestEvents();
@@ -71,7 +64,7 @@ export async function loadEvents(dateISO) {
   return arr;
 }
 
-// ===== 對外：新增（建議 UI 用這個）=====
+
 export async function createEvent(payload) {
   if (isGuestMode()) {
     const all = loadGuestEvents();
@@ -91,7 +84,6 @@ export async function createEvent(payload) {
   return createEventApi(payload);
 }
 
-// ===== 對外：切換 done =====
 export async function toggleEventDone(event) {
   if (isGuestMode()) {
     const all = loadGuestEvents();
@@ -113,7 +105,7 @@ export async function toggleEventDone(event) {
   await updateEventApi(event.id, { done: event.done === true ? false : true });
 }
 
-// ===== 對外：更新 =====
+
 export async function updateEvent(eventId, patch) {
   if (isGuestMode()) {
     const all = loadGuestEvents();
@@ -135,7 +127,7 @@ export async function updateEvent(eventId, patch) {
   await updateEventApi(eventId, patch);
 }
 
-// ===== 對外：刪除 =====
+
 export async function deleteEvent(eventId) {
   if (isGuestMode()) {
     const all = loadGuestEvents();
