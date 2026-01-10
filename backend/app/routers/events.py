@@ -91,7 +91,7 @@ async def update_event(
 
     update_doc = {}
 
-    # 只有傳了才更新（EventUpdateBody 裡要用 Optional）
+  
     if body.dateISO is not None:
         update_doc["dateISO"] = body.dateISO
     if body.title is not None:

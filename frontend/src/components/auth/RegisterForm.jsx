@@ -26,7 +26,11 @@ export default function RegisterForm({ onRegister }) {
     }
 
     setErr("");
-    onRegister({ account, password: pw1 });
+    onRegister({
+      username: account,
+      password: pw1,
+      confirmPassword: pw2,
+    });
   }
 
   return (
@@ -35,7 +39,7 @@ export default function RegisterForm({ onRegister }) {
         className="input"
         placeholder="註冊帳號"
         value={account}
-        onChange={e => setAccount(e.target.value)}
+        onChange={(e) => setAccount(e.target.value)}
       />
 
       <input
@@ -43,7 +47,7 @@ export default function RegisterForm({ onRegister }) {
         type="password"
         placeholder="設定密碼"
         value={pw1}
-        onChange={e => setPw1(e.target.value)}
+        onChange={(e) => setPw1(e.target.value)}
       />
 
       <input
@@ -51,13 +55,15 @@ export default function RegisterForm({ onRegister }) {
         type="password"
         placeholder="再次確認密碼"
         value={pw2}
-        onChange={e => setPw2(e.target.value)}
+        onChange={(e) => setPw2(e.target.value)}
       />
 
       {err && <div className="error">{err}</div>}
 
       <div className="actions">
-        <button className="btn primary" onClick={submit}>註冊</button>
+        <button className="btn primary" onClick={submit}>
+          註冊
+        </button>
       </div>
     </div>
   );
