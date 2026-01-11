@@ -233,6 +233,7 @@
 ---
 
 ## 10. 專案目錄結構
+```text
 project-name/
 ├── frontend/
 │   ├── src/
@@ -249,3 +250,4 @@ project-name/
 │   └── flowchart.png
 ├── README.md
 └── .gitignore
+```
