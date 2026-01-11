@@ -204,6 +204,4 @@ flowchart TD
 
 ---
 
-### 你可以怎麼用這份檔案
-- 放到專案根目錄：`114tku_web_final/ARCHITECTURE_AND_FLOW.md`
-- 或直接貼到 README 的「系統架構」與「流程圖」章節
+
